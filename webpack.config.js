@@ -13,6 +13,11 @@ module.exports = {
         filename: 'main.js',
         publicPath: '/',
     },
+    performance: {
+        hints: "warning",
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+    },
     devtool: 'source-map',
     devServer: {
         port: 3000,
