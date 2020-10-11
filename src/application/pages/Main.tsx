@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import BackgroundImage from '@/application/components/BackgroundImage';
-import { bingService, openCageService } from '@/infrastructure/services';
+import { bingService, openCageService, openWeatherService } from '@/infrastructure/services';
 import { geolocationService } from '@/domain/services';
 import Geolocation from '@/domain/models/Geolocation';
+import OpenWeather from '@/domain/models/OpenWeather';
 
 /**
  * Main page
@@ -10,6 +11,24 @@ import Geolocation from '@/domain/models/Geolocation';
 const main = () => {
     const [backgroundImage, setBackgroundImage] = useState('');
     const [geolocation, setGeolocation] = useState(new Geolocation());
+    const [locationName, setLocationName] = useState('');
+    const [weatherInfo, setWeatherInfo] = useState(new OpenWeather());
+
+    useEffect(() => {
+        fetchBackgroundImage();
+    }, []);
+
+    useEffect(() => {
+        fetchLatLong();
+    }, [locationName]);
+
+    useEffect(() => {
+        fetchLocationName();
+    }, [geolocation]);
+
+    useEffect(() => {
+        fetchWeather();
+    }, [locationName]);
 
     const fetchBackgroundImage = async () => {
         const imageUrl = await bingService.getImageUrl();
@@ -20,7 +39,6 @@ const main = () => {
         const dummyGeo = new Geolocation();
         geolocationService.setLocation(dummyGeo);
         setGeolocation(dummyGeo);
-        console.log(geolocation);
     };
 
     const fetchLocationName = async () => {
@@ -29,18 +47,24 @@ const main = () => {
                 geolocation.latitude,
                 geolocation.longitude
             );
+            setLocationName(name);
         }
     };
 
-    useEffect(() => {
-        fetchBackgroundImage();
-        fetchLatLong();
-        fetchLocationName();
-    }, []);
+    const fetchWeather = async () => {
+        if (locationName) {
+            const info = await openWeatherService.getWeather(locationName);
+            setWeatherInfo(info);
+        }
+    };
 
     return (
         <BackgroundImage url={backgroundImage}>
-            <h1>Hello World</h1>
+            <input
+                defaultValue={locationName}
+                onChange={(event) => setLocationName(event.target.value)}
+            />
+            <p>{weatherInfo.main.temp}</p>
         </BackgroundImage>
     );
 };
