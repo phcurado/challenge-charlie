@@ -6,8 +6,8 @@ interface GeolocationParams {
 }
 
 class Geolocation extends BaseModel implements GeolocationParams {
-    static DEFAULT_LAT = -23.6388352;
-    static DEFAULT_LONG = -46.6976768;
+    static DEFAULT_LAT = -22.9137531;
+    static DEFAULT_LONG = -43.5860654;
     latitude?: number;
     longitude?: number;
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BackgroundImage from '@/application/components/BackgroundImage';
-import { bingService } from '@/infrastructure/services';
+import { bingService, openCageService } from '@/infrastructure/services';
 import { geolocationService } from '@/domain/services';
 import Geolocation from '@/domain/models/Geolocation';
 
@@ -20,11 +20,22 @@ const main = () => {
         const dummyGeo = new Geolocation();
         geolocationService.setLocation(dummyGeo);
         setGeolocation(dummyGeo);
+        console.log(geolocation);
+    };
+
+    const fetchLocationName = async () => {
+        if (geolocation.latitude && geolocation.longitude) {
+            const name = await openCageService.getLocationName(
+                geolocation.latitude,
+                geolocation.longitude
+            );
+        }
     };
 
     useEffect(() => {
         fetchBackgroundImage();
         fetchLatLong();
+        fetchLocationName();
     }, []);
 
     return (
