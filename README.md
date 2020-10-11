@@ -60,11 +60,12 @@ Boa sorte e boa viagem! ;)
 
 # Documentação do Desafio Charlie
 
-Nos tópicos abaixo serão explicados como instalar, rodar e motivação das definições arquiteturais desta aplicação.
+Nos tópicos abaixo serão explicados como instalar, rodar e as motivação por trás das definições arquiteturais desta aplicação.
 
 ## Instalar e rodar o projeto
 
-Este projeto pode ser instalado e rodado tanto por Docker container ou pelo próprio npm.
+Este projeto pode ser instalado e rodado tanto por Docker container quanto por npm.
+É recomendado usar `node/npm` em desenvolvimento para ter maior velocidade de feedback, tempo de build e responsividade do servidor webpack.
 
 ### Docker
 
@@ -72,11 +73,15 @@ TODO: Ainda a definir
 
 ### NPM
 
-Para instalar as dependencias: `npm install`
-Para rodar o projeto no servidor de desenvolvimento: `npm run start`
+- Para instalar as dependencias: `npm install`
+- Para rodar o projeto no servidor de desenvolvimento: `npm run start`
 
 ## Arquitetura
 
+## Produção
+Para buildar para produção: `npm run build`.
+
+Note que a pasta `build` foi criada e seus arquivos devem ser colocados em um servidor com roteamento configurado para servir os arquivos estáticos. Um exemplo simples é destinar o servidor para seguir normalmente seu roteamento interno (no formato `json` por exemplo) os requests para `https://{host_name}/api/*` e arquivos estáticos como `html`, `css`, `js` e imagens para `https://{host_name}/*`.
 
 
 
