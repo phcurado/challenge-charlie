@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
+
+// Components
 import BackgroundImage from '@/application/components/BackgroundImage';
+import WeatherIcon from '@/application/components/icon/WeatherIcon';
+import Card from '@/application/components/Card';
+import Row from '@/application/components/Row';
+import Col from '@/application/components/Column';
+
+// Services
 import { bingService, openCageService, openWeatherService } from '@/infrastructure/services';
 import { geolocationService } from '@/domain/services';
+
+// Models
 import Geolocation from '@/domain/models/Geolocation';
 import OpenWeather from '@/domain/models/OpenWeather';
 
@@ -60,11 +70,21 @@ const main = () => {
 
     return (
         <BackgroundImage url={backgroundImage}>
-            <input
-                defaultValue={locationName}
-                onChange={(event) => setLocationName(event.target.value)}
-            />
-            <p>{weatherInfo.main.temp}</p>
+            <Card width="100%">
+                <Row>
+                    <Col>
+                        <WeatherIcon name="44" width="50" />
+                    </Col>
+                    <Col>
+                        <input
+                            defaultValue={locationName}
+                            onChange={(event) => setLocationName(event.target.value)}
+                        />
+                    </Col>
+                </Row>
+                <p>{weatherInfo.main.temp}</p>
+                <div style={{ height: '200px', width: '500px' }} className="size"></div>
+            </Card>
         </BackgroundImage>
     );
 };
