@@ -56,3 +56,27 @@ Boa sorte e boa viagem! ;)
 <p align="center">
   <img src="ca.jpg" alt="Challange accepted" />
 </p>
+
+
+# Documentação do Desafio Charlie
+
+Nos tópicos abaixo serão explicados como instalar, rodar e motivação das definições arquiteturais desta aplicação.
+
+## Instalar e rodar o projeto
+
+Este projeto pode ser instalado e rodado tanto por Docker container ou pelo próprio npm.
+
+### Docker
+
+TODO: Ainda a definir
+
+### NPM
+
+Para instalar as dependencias: `npm install`
+Para rodar o projeto no servidor de desenvolvimento: `npm run start`
+
+## Arquitetura
+
+
+
+

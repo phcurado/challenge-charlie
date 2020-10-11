@@ -8,21 +8,6 @@ const htmlPlugin = new HtmlWebPackPlugin({
 
 module.exports = {
     entry: './src/index.tsx',
-    output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'main.js',
-        publicPath: '/',
-    },
-    performance: {
-        hints: "warning",
-        maxEntrypointSize: 512000,
-        maxAssetSize: 512000
-    },
-    devtool: 'source-map',
-    devServer: {
-        port: 3000,
-        historyApiFallback: true,
-    },
     module: {
         rules: [
             {
@@ -37,7 +22,11 @@ module.exports = {
             },
         ],
     },
-    resolve: { extensions: ['.ts', '.tsx', '.js', '.json'] },
-
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.json'],
+        alias: {
+            '@': path.resolve('src'),
+        },
+    },
     plugins: [htmlPlugin],
 };

@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
         "outDir": "./build/",
+        "importHelpers": true,
+        "moduleResolution": "node",
         "sourceMap": true,
         "noImplicitAny": true,
         "module": "commonjs",
@@ -10,7 +12,12 @@
         "removeComments": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        },
     },
-    "include": ["./src/**/*"]
+    "include": ["src/**/*.ts", "src/**/*.tsx"],
+    "exclude": ["node_modules"]
 }
