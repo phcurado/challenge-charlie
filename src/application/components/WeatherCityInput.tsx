@@ -2,7 +2,7 @@ import React, { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import WeatherIcon from '@/application/components/icon/WeatherIcon';
 
-interface DivProps extends InputHTMLAttributes<HTMLInputElement> {
+interface DivProps {
     backgroundColor?: string;
     height?: string | number;
 }
@@ -16,9 +16,13 @@ const Input = styled.input`
     border: none;
     background-color: transparent;
     width: 100%;
+    margin-left: 15px;
     color: ${({ color }: Props) => color};
     font-size: 21pt;
     font-weight: bold;
+    &:focus {
+        outline: none;
+    }
 `;
 
 const Div = styled.div`
