@@ -31,7 +31,7 @@ const main = () => {
 
     useEffect(() => {
         fetchLocationName();
-    }, []);
+    }, [geolocation.latitude, geolocation.longitude]);
 
     useEffect(() => {
         fetchWeather();
@@ -86,6 +86,13 @@ const main = () => {
                                 color="white"
                                 icon={weatherInfo.icon}
                                 temperature={weatherInfo.getTemperatureFormatted(temperatureType)}
+                                onClickTemperature={() =>
+                                    setTemperatureType(
+                                        temperatureType == TemperatureType.CELSIUS
+                                            ? TemperatureType.FAHRENHEIT
+                                            : TemperatureType.CELSIUS
+                                    )
+                                }
                                 extraInfo={{
                                     description: weatherInfo.getDescription(),
                                     wind: weatherInfo.getWindFormatted(),

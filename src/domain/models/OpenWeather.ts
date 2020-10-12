@@ -105,7 +105,7 @@ class OpenWeather extends BaseModel implements OpenWeatherParams {
      * Format wind
      */
     getWindFormatted(): string {
-        const speed = msToKMh(this.wind.speed);
+        const speed = msToKMh(this.wind.speed).toFixed(2);
         return `${speed.toString()}Km/h`;
     }
 

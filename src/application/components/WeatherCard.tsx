@@ -1,12 +1,15 @@
-import React, { InputHTMLAttributes } from 'react';
-import styled from 'styled-components';
+import React, { HTMLAttributes, InputHTMLAttributes } from 'react';
+import styled, { css } from 'styled-components';
 import WeatherIcon from '@/application/components/icon/WeatherIcon';
 import Row from '@/application/components/Row';
 import Col from '@/application/components/Column';
 
-interface ParagraphProps {
+interface ParagraphProps extends HTMLAttributes<HTMLParagraphElement> {
     color?: string;
     fontSize?: string;
+    cursor?: string;
+    margin?: string;
+    textTransform?: string;
 }
 
 interface DivProps {
@@ -20,11 +23,13 @@ interface ExtraInfo {
     pressure: string;
 }
 
-interface Props extends InputHTMLAttributes<HTMLInputElement>, ParagraphProps, DivProps {
+interface Props extends InputHTMLAttributes<HTMLInputElement>, DivProps {
     icon?: string;
     dayLabel: string;
     temperature: string;
+    onClickTemperature: Function;
     extraInfo?: ExtraInfo;
+    color?: string;
 }
 
 const Div = styled.div`
@@ -34,11 +39,27 @@ const Div = styled.div`
 `;
 
 const P = styled.p`
-    font-size: ${({ fontSize }: ParagraphProps) => fontSize};
-    color: ${({ color }: ParagraphProps) => color};
+    font-size: ${(props) => props.fontSize};
+    color: ${(props) => props.color};
+    margin: ${(props) => props.margin};
+    text-transform: ${(props) => props.textTransform};
+
+    ${({ cursor }: ParagraphProps) =>
+        cursor &&
+        css`
+            cursor: ${cursor};
+        `}
 `;
 
-const weatherCard = ({ dayLabel, backgroundColor, color, icon, temperature, extraInfo }: Props) => {
+const weatherCard = ({
+    dayLabel,
+    backgroundColor,
+    color,
+    icon,
+    temperature,
+    extraInfo,
+    onClickTemperature,
+}: Props) => {
     return (
         <Div backgroundColor={backgroundColor}>
             <Row>
@@ -51,22 +72,32 @@ const weatherCard = ({ dayLabel, backgroundColor, color, icon, temperature, extr
                     <P fontSize="22pt" color={color}>
                         {dayLabel}
                     </P>
-                    <P fontSize="22pt" color={color}>
+                    <P
+                        cursor="pointer"
+                        fontSize="22pt"
+                        color={color}
+                        onClick={() => onClickTemperature()}
+                    >
                         {temperature}
                     </P>
                     {extraInfo ? (
-                        <div>
-                            <P fontSize="22pt" color={color}>
+                        <div style={{ marginTop: '15px' }}>
+                            <P
+                                textTransform="capitalize"
+                                margin="0 0 15px 0"
+                                fontSize="22pt"
+                                color={color}
+                            >
                                 {extraInfo.description}
                             </P>
                             <P fontSize="15pt" color={color}>
-                                {extraInfo.wind}
+                                Vento: {extraInfo.wind}
                             </P>
                             <P fontSize="15pt" color={color}>
-                                {extraInfo.humidity}
+                                Humidade: {extraInfo.humidity}
                             </P>
                             <P fontSize="15pt" color={color}>
-                                {extraInfo.pressure}
+                                Pressão: {extraInfo.pressure}
                             </P>
                         </div>
                     ) : undefined}
