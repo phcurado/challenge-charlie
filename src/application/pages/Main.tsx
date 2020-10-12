@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 // Components
 import BackgroundImage from '@/application/components/BackgroundImage';
-import WeatherIcon from '@/application/components/icon/WeatherIcon';
 import Card from '@/application/components/Card';
 import Row from '@/application/components/Row';
 import Col from '@/application/components/Column';
+import WeatherCityInput from '@/application/components/WeatherCityInput';
+import WeatherIcon from '@/application/components/icon/WeatherIcon';
 
 // Services
 import { bingService, openCageService, openWeatherService } from '@/infrastructure/services';
@@ -30,11 +31,11 @@ const main = () => {
 
     useEffect(() => {
         fetchLatLong();
-    }, [locationName]);
+    }, []);
 
     useEffect(() => {
         fetchLocationName();
-    }, [geolocation]);
+    }, []);
 
     useEffect(() => {
         fetchWeather();
@@ -70,21 +71,38 @@ const main = () => {
 
     return (
         <BackgroundImage url={backgroundImage}>
-            <Card width="100%">
-                <Row>
-                    <Col>
-                        <WeatherIcon name="44" width="50" />
-                    </Col>
-                    <Col>
-                        <input
-                            defaultValue={locationName}
-                            onChange={(event) => setLocationName(event.target.value)}
-                        />
-                    </Col>
-                </Row>
-                <p>{weatherInfo.main.temp}</p>
-                <div style={{ height: '200px', width: '500px' }} className="size"></div>
-            </Card>
+            <Row>
+                <Col center>
+                    <Card width="700px">
+                        <Row>
+                            <Col>
+                                <WeatherCityInput
+                                    defaultValue={locationName}
+                                    backgroundColor="white"
+                                    icon="44"
+                                    height="50px"
+                                    color={'#7d7d7d'}
+                                    onChange={(event) => setLocationName(event.target.value)}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <WeatherIcon
+                                    fill="white"
+                                    name={weatherInfo.icon}
+                                    width="200px"
+                                    height="200px"
+                                />
+                            </Col>
+                            <Col>
+                                <p>Hoje</p>
+                                <p>{weatherInfo.main.temp}</p>
+                            </Col>
+                        </Row>
+                    </Card>
+                </Col>
+            </Row>
         </BackgroundImage>
     );
 };

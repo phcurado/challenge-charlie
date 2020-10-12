@@ -18,13 +18,13 @@ interface WeatherParams {
 interface OpenWeatherParams {
     main: MainParams;
     wind: WindParams;
-    weather: WeatherParams;
+    weather: Array<WeatherParams>;
 }
 
 class OpenWeather extends BaseModel implements OpenWeatherParams {
     main: MainParams;
     wind: WindParams;
-    weather: WeatherParams;
+    weather: Array<WeatherParams>;
 
     constructor(
         data: OpenWeatherParams = {
@@ -37,9 +37,11 @@ class OpenWeather extends BaseModel implements OpenWeatherParams {
                 speed: 0,
                 deg: 0,
             },
-            weather: {
-                icon: '1d',
-            },
+            weather: [
+                {
+                    icon: '01d',
+                },
+            ],
         }
     ) {
         super();
@@ -49,7 +51,9 @@ class OpenWeather extends BaseModel implements OpenWeatherParams {
     }
 
     get icon() {
-        return this.weather && this.weather.icon ? this.weather.icon.split('d')[0] : '1';
+        return this.weather && this.weather[0].icon
+            ? parseInt(this.weather[0].icon.split('d')[0]).toString()
+            : '1';
     }
 
     static fromData(data: OpenWeatherParams): OpenWeather {

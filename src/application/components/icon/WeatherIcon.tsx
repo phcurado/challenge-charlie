@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, FC, SVGProps } from 'react';
 
-interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
     name: string;
 }
 
-const weatherIcon = ({ name, ...rest }: Props) => {
-    let [icon, setIcon] = useState('');
+export const Icon: FC<IconProps> = ({ name, ...rest }) => {
+    const ImportedIconRef = useRef<FC<SVGProps<SVGSVGElement>>>();
+    const [loading, setLoading] = React.useState(false);
 
-    const test = async () => {
-        let importedIcon = await import(`@/application/assets/icons/weather/${name}.svg`);
-        setIcon(importedIcon.default);
+    const importIcon = async () => {
+        setLoading(true);
+        import(`@/application/assets/icons/weather/${name}.svg`)
+            .then((getIcon) => (ImportedIconRef.current = getIcon.default))
+            .then(() => setLoading(false));
     };
 
     useEffect(() => {
-        test();
-    }, []);
-
-    return <img alt="" src={icon} {...rest} />;
+        importIcon();
+    }, [name]);
+    if (!loading && ImportedIconRef.current) {
+        return <ImportedIconRef.current viewBox="0 0 512 512" {...rest} />;
+    }
+    return null;
 };
 
-export default weatherIcon;
+export default Icon;

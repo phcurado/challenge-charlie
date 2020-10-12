@@ -15,6 +15,7 @@ const Card = styled.div`
 const CardInner = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 `;
 
 const card = ({ width, children }: Props) => {
