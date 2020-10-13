@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // Components
 import Card from '@/application/components/Card';
-import Row from '@/application/components/Row';
-import Col from '@/application/components/Column';
+import { Row, Col } from '@/application/components/grid';
 import WeatherCityInput from '@/application/components/WeatherCityInput';
 import WeatherCard from '@/application/components/WeatherCard';
 
@@ -24,6 +23,7 @@ const main = () => {
     const [locationName, setLocationName] = useState('');
     const [weatherInfo, setWeatherInfo] = useState(new OpenWeather());
     const [temperatureType, setTemperatureType] = useState(TemperatureType.CELSIUS);
+    const [weatherTomorrow, setWeatherTomorrow] = useState(new OpenWeather());
 
     useEffect(() => {
         fetchLatLong();
@@ -59,6 +59,8 @@ const main = () => {
             if (info) {
                 setWeatherInfo(info);
             }
+
+            const forecast = await openWeatherService.getForecast(locationName);
         }
     };
 

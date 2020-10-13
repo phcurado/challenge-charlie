@@ -1,7 +1,7 @@
 import { css, createGlobalStyle } from 'styled-components';
 
 // prettier-ignore
-export const ResetStyle = createGlobalStyle`${css`
+export const resetStyle = createGlobalStyle`${css`
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -52,4 +52,4 @@ table {
 }
 `}`
 
-export default ResetStyle;
+export default resetStyle;

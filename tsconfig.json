@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "./build/",
-        "types": ["react"],
+        "types": ["react", "node"],
         "importHelpers": true,
         "moduleResolution": "node",
         "sourceMap": true,

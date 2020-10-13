@@ -78,6 +78,13 @@ TODO: Ainda a definir
 
 ## Arquitetura
 
+A estrutura principal foi dividida em três partes, `application`, `domain`,  e `infrastructure`. O objetivo desta estrutura é separar completamente toda a lógica de domínio e integrações da aplicação feita em `React`. No caso de precisar trocar o framework principal e, por exemlo, usar vanilla javascript pode-se fazer mudando estruturalmente a configuração do webpack, package.json e alterar a pasta `application` para não ter a arquitetura do React. Assim a arquitetura fica mais divida em termos de responsabilidades, abaixo a explicação destas camadsa.
+
+- **Application**: Onde ficam as páginas e componentes feitos na biblioteca React. Este diretório consome as regras de domínio e infraestrutura para apresentar as informações na tela do usuário.
+- **Domain**: O domínio da aplicação é a implementação das regras de negócio. Nela basicamente tem os objetos de domínio usados para instanciar, ter valores padões e utilitários para serem usadas nas telas ou na camada de `infraestrutura`.
+- **Infrastruture**: A camada de infraestrutura desta aplicação contém a integração com as APIs necessárias para mostrar as informações dos climas na tela. Foi implementado a integração com o `Bing`, `OpenCage` e `OpenWeather`. Para estas chamadas de api foi utilizado a `Axios`.
+
+
 ## Produção
 Para buildar para produção: `npm run build`.
 

@@ -6,7 +6,8 @@ import { AxiosInstance, AxiosResponse } from 'axios';
  * Service for the OpenCage API
  */
 class OpenCageService {
-    static API_KEY = 'c63386b4f77e46de817bdf94f552cddf';
+    static API_KEY = process.env.OPEN_CAGE_API_KEY;
+
     constructor(private http: AxiosInstance) {}
 
     async getLocation(lat: number, long: number): Promise<OpenCage> {

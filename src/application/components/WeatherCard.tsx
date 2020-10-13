@@ -1,8 +1,7 @@
 import React, { HTMLAttributes, InputHTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
 import WeatherIcon from '@/application/components/icon/WeatherIcon';
-import Row from '@/application/components/Row';
-import Col from '@/application/components/Column';
+import { Row, Col } from '@/application/components/grid';
 
 interface ParagraphProps extends HTMLAttributes<HTMLParagraphElement> {
     color?: string;
