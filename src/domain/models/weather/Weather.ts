@@ -6,6 +6,7 @@ import {
     kelvinToCelsius,
 } from '@/domain/utils/temperatureUtils';
 import { msToKMh } from '@/domain/utils/speedUtils';
+import { heatColor } from '@/domain/helper/heatColor';
 
 interface MainParams {
     temp: number;
@@ -27,20 +28,20 @@ interface ConfigParams {
     temperatureType: TemperatureType;
 }
 
-interface OpenWeatherParams {
+interface IWeatherParams {
     main: MainParams;
     wind: WindParams;
     weather: Array<WeatherParams>;
 }
 
-class OpenWeather extends BaseModel implements OpenWeatherParams {
+class Weather extends BaseModel implements IWeatherParams {
     main: MainParams;
     wind: WindParams;
     weather: Array<WeatherParams>;
     config: ConfigParams;
 
     constructor(
-        data: OpenWeatherParams = {
+        data: IWeatherParams = {
             main: {
                 temp: 0,
                 pressure: 0,
@@ -66,7 +67,7 @@ class OpenWeather extends BaseModel implements OpenWeatherParams {
     }
 
     /**
-     * Format the OpenWeather icon to this application local icon
+     * Format the Weather icon to this application local icon
      */
     get icon() {
         return this.weather && this.weather[0].icon
@@ -75,10 +76,10 @@ class OpenWeather extends BaseModel implements OpenWeatherParams {
     }
 
     /**
-     * Get the Temperature from OpenWeather
+     * Get the Temperature from Weather
      */
-    get temperature(): number | null {
-        return this.main ? this.main.temp : null;
+    get temperature(): number {
+        return this.main.temp;
     }
 
     /**
@@ -124,38 +125,16 @@ class OpenWeather extends BaseModel implements OpenWeatherParams {
     }
 
     /**
-     * Calcula a cor RGBA para as diferentes temperaturas
+     * Heat Color RGBA for temperature
      */
     get heatColor(): string {
-        const BOT_TEMP = -60;
-        const MIN_TEMP = 15;
-        const MAX_TEMP = 35;
-        const TOP_TEMP = 60;
-        const MIN_RANGE = 15;
-
-        if (!this.temperature) return 'white';
-
-        const temperature = kelvinToCelsius(this.temperature);
-
-        let colorBind = 233;
-        let a = 1;
-
-        if (temperature <= MIN_TEMP) {
-            a = (MIN_TEMP - temperature + MIN_RANGE) / (MIN_TEMP - BOT_TEMP);
-            return `rgba(0, 0, ${colorBind}, ${a})`;
-        } else if (temperature >= MAX_TEMP) {
-            a = (temperature + MIN_RANGE) / (TOP_TEMP + MAX_TEMP);
-            return `rgba(${colorBind}, 0, 0, ${a})`;
-        }
-
-        a = temperature / MAX_TEMP;
-        return `rgba(${colorBind}, ${colorBind}, 0, ${a})`;
+        return heatColor(kelvinToCelsius(this.temperature));
     }
 
-    static fromData(data: OpenWeatherParams): OpenWeather {
-        return new OpenWeather(data);
+    static fromData(data: IWeatherParams): Weather {
+        return new Weather(data);
     }
 }
 
-export default OpenWeather;
-export { OpenWeatherParams };
+export default Weather;
+export { IWeatherParams, WeatherParams };

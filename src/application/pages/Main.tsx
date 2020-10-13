@@ -12,7 +12,8 @@ import { geolocationService } from '@/domain/services';
 
 // Models
 import Geolocation from '@/domain/models/Geolocation';
-import OpenWeather from '@/domain/models/OpenWeather';
+import Weather from '@/domain/models/weather/Weather';
+import ForecastList from '@/domain/models/weather/ForecastList';
 import TemperatureType from '@/domain/models/enums/TemperatureType';
 
 /**
@@ -21,9 +22,9 @@ import TemperatureType from '@/domain/models/enums/TemperatureType';
 const main = () => {
     const [geolocation, setGeolocation] = useState(new Geolocation());
     const [locationName, setLocationName] = useState('');
-    const [weatherInfo, setWeatherInfo] = useState(new OpenWeather());
+    const [weatherInfo, setWeatherInfo] = useState(new Weather());
     const [temperatureType, setTemperatureType] = useState(TemperatureType.CELSIUS);
-    const [weatherTomorrow, setWeatherTomorrow] = useState(new OpenWeather());
+    const [forecastInfoList, setForecastInfoList] = useState(new ForecastList());
 
     useEffect(() => {
         fetchLatLong();
@@ -61,7 +62,35 @@ const main = () => {
             }
 
             const forecast = await openWeatherService.getForecast(locationName);
+            if (forecast) {
+                setForecastInfoList(forecast);
+                console.log(forecast);
+            }
         }
+    };
+
+    const renderForecasts = () => {
+        return forecastInfoList.list.slice(1).map((forecast, i) => {
+            return (
+                <Row key={i}>
+                    <Col>
+                        <WeatherCard
+                            dayLabel="AMANHÃ"
+                            backgroundColor={forecast.heatColor}
+                            color="white"
+                            temperature={forecast.getTemperatureFormatted(temperatureType)}
+                            onClickTemperature={() =>
+                                setTemperatureType(
+                                    temperatureType == TemperatureType.CELSIUS
+                                        ? TemperatureType.FAHRENHEIT
+                                        : TemperatureType.CELSIUS
+                                )
+                            }
+                        />
+                    </Col>
+                </Row>
+            );
+        });
     };
 
     return (
@@ -104,6 +133,7 @@ const main = () => {
                             />
                         </Col>
                     </Row>
+                    {renderForecasts()}
                 </Card>
             </Col>
         </Row>
