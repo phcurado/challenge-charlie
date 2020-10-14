@@ -102,7 +102,7 @@ const main = () => {
                             <WeatherCityInput
                                 defaultValue={locationName}
                                 backgroundColor="white"
-                                icon="44"
+                                icon="compass"
                                 height="50px"
                                 color={'#7d7d7d'}
                                 onChange={(event) => setLocationName(event.target.value)}

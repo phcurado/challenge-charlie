@@ -70,9 +70,7 @@ class Weather extends BaseModel implements IWeatherParams {
      * Format the Weather icon to this application local icon
      */
     get icon() {
-        return this.weather && this.weather[0].icon
-            ? parseInt(this.weather[0].icon.split('d')[0]).toString()
-            : '1';
+        return this.weather && this.weather[0].icon ? this.weather[0].icon : '1d';
     }
 
     /**
