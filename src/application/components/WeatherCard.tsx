@@ -68,12 +68,12 @@ const weatherCard = ({
                     ) : null}
                 </Col>
                 <Col>
-                    <P fontSize="22pt" color={color}>
+                    <P fontSize="19pt" color={color}>
                         {dayLabel}
                     </P>
                     <P
                         cursor="pointer"
-                        fontSize="22pt"
+                        fontSize="19pt"
                         color={color}
                         onClick={() => onClickTemperature()}
                     >

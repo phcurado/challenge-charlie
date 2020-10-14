@@ -15,6 +15,7 @@ import Geolocation from '@/domain/models/Geolocation';
 import Weather from '@/domain/models/weather/Weather';
 import ForecastList from '@/domain/models/weather/ForecastList';
 import TemperatureType from '@/domain/models/enums/TemperatureType';
+import useDebounce from '@/application/hooks/useDebounce';
 
 /**
  * Main page
@@ -22,9 +23,12 @@ import TemperatureType from '@/domain/models/enums/TemperatureType';
 const main = () => {
     const [geolocation, setGeolocation] = useState(new Geolocation());
     const [locationName, setLocationName] = useState('');
+
     const [weatherInfo, setWeatherInfo] = useState(new Weather());
     const [temperatureType, setTemperatureType] = useState(TemperatureType.CELSIUS);
     const [forecastInfoList, setForecastInfoList] = useState(new ForecastList());
+
+    const debouncedLocationName = useDebounce(locationName, 500);
 
     useEffect(() => {
         fetchLatLong();
@@ -36,7 +40,7 @@ const main = () => {
 
     useEffect(() => {
         fetchWeather();
-    }, [locationName]);
+    }, [debouncedLocationName]);
 
     const fetchLatLong = async () => {
         const dummyGeo = new Geolocation();
@@ -55,16 +59,15 @@ const main = () => {
     };
 
     const fetchWeather = async () => {
-        if (locationName) {
-            const info = await openWeatherService.getWeather(locationName);
+        if (debouncedLocationName) {
+            const info = await openWeatherService.getWeather(debouncedLocationName);
             if (info) {
                 setWeatherInfo(info);
             }
 
-            const forecast = await openWeatherService.getForecast(locationName);
+            const forecast = await openWeatherService.getForecast(debouncedLocationName);
             if (forecast) {
                 setForecastInfoList(forecast);
-                console.log(forecast);
             }
         }
     };
@@ -75,7 +78,7 @@ const main = () => {
                 <Row key={i}>
                     <Col>
                         <WeatherCard
-                            dayLabel="AMANHÃ"
+                            dayLabel={i === 0 ? 'AMANHÃ' : 'DEPOIS DE AMANHÃ'}
                             backgroundColor={forecast.heatColor}
                             color="white"
                             temperature={forecast.getTemperatureFormatted(temperatureType)}
@@ -96,7 +99,7 @@ const main = () => {
     return (
         <Row>
             <Col center>
-                <Card width="500px">
+                <Card width="600px">
                     <Row>
                         <Col>
                             <WeatherCityInput
