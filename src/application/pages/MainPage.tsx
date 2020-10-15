@@ -8,25 +8,26 @@ import WeatherCard from '@/application/components/WeatherCard';
 
 // Services
 import { openCageService, openWeatherService } from '@/infrastructure/services';
+import { weatherService } from '@/domain/services';
 import { geolocationService } from '@/domain/services';
 
 // Models
 import Geolocation from '@/domain/models/Geolocation';
 import Weather from '@/domain/models/weather/Weather';
-import ForecastList from '@/domain/models/weather/ForecastList';
+import Forecast from '@/domain/models/weather/Forecast';
 import TemperatureType from '@/domain/models/enums/TemperatureType';
 import useDebounce from '@/application/hooks/useDebounce';
 
 /**
  * Main page
  */
-const main = () => {
+const mainPage = () => {
     const [geolocation, setGeolocation] = useState(new Geolocation());
     const [locationName, setLocationName] = useState('');
 
     const [weatherInfo, setWeatherInfo] = useState(new Weather());
     const [temperatureType, setTemperatureType] = useState(TemperatureType.CELSIUS);
-    const [forecastInfoList, setForecastInfoList] = useState(new ForecastList());
+    const [forecastInfo, setForecastInfo] = useState(new Forecast());
 
     const debouncedLocationName = useDebounce(locationName, 500);
 
@@ -65,15 +66,15 @@ const main = () => {
                 setWeatherInfo(info);
             }
 
-            const forecast = await openWeatherService.getForecast(debouncedLocationName);
+            const forecast = await weatherService.getForecast(debouncedLocationName, 3);
             if (forecast) {
-                setForecastInfoList(forecast);
+                setForecastInfo(forecast);
             }
         }
     };
 
     const renderForecasts = () => {
-        return forecastInfoList.list.slice(1).map((forecast, i) => {
+        return forecastInfo.list.map((forecast, i) => {
             return (
                 <Row key={i}>
                     <Col>
@@ -143,4 +144,4 @@ const main = () => {
     );
 };
 
-export default main;
+export default mainPage;

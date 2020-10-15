@@ -1,7 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import route from './route';
 import OpenWeather, { IWeatherParams } from '@/domain/models/weather/Weather';
-import ForecastList, { IForecastListParams } from '@/domain/models/weather/ForecastList';
+import Forecast, { IForecastParams } from '@/domain/models/weather/Forecast';
 
 /**
  * Service for the OpenWeather API
@@ -22,26 +22,26 @@ class OpenWeatherService {
             .then((response: AxiosResponse<IWeatherParams>) => {
                 return OpenWeather.fromData(response.data);
             })
-            .catch(() => {
+            .catch((err) => {
                 return null;
             });
     }
 
-    async getForecast(locationName: string): Promise<ForecastList | null> {
+    async getForecast(locationName: string, hours: number = 5): Promise<Forecast> {
         return this.http
             .get(`${route.BASE}${route.FORECAST}`, {
                 params: {
                     q: `${locationName}`,
                     lang: 'pt_br',
-                    cnt: 3,
+                    cnt: hours,
                     APPID: OpenWeatherService.API_KEY,
                 },
             })
-            .then((response: AxiosResponse<IForecastListParams>) => {
-                return ForecastList.fromData(response.data);
+            .then((response: AxiosResponse<IForecastParams>) => {
+                return Forecast.fromData(response.data);
             })
-            .catch(() => {
-                return null;
+            .catch((err) => {
+                throw err;
             });
     }
 }

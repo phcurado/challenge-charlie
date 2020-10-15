@@ -32,12 +32,14 @@ interface IWeatherParams {
     main: MainParams;
     wind: WindParams;
     weather: Array<WeatherParams>;
+    dt_txt: Date;
 }
 
 class Weather extends BaseModel implements IWeatherParams {
     main: MainParams;
     wind: WindParams;
     weather: Array<WeatherParams>;
+    dt_txt: Date;
     config: ConfigParams;
 
     constructor(
@@ -57,12 +59,14 @@ class Weather extends BaseModel implements IWeatherParams {
                     icon: '01d',
                 },
             ],
+            dt_txt: new Date(),
         }
     ) {
         super();
         this.main = data.main;
         this.wind = data.wind;
         this.weather = data.weather;
+        this.dt_txt = new Date(data.dt_txt);
         this.config = { temperatureType: TemperatureType.KELVIN };
     }
 

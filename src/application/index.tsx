@@ -6,7 +6,7 @@ import { bingService } from '@/infrastructure/services';
 // Components
 import BackgroundImage from '@/application/components/BackgroundImage';
 import ResetStyle from './styles/Reset';
-import Main from './pages/Main';
+import Main from './pages/MainPage';
 
 const app = () => {
     const [backgroundImage, setBackgroundImage] = useState('');
