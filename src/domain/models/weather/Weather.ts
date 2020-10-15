@@ -7,6 +7,7 @@ import {
 } from '@/domain/utils/temperatureUtils';
 import { msToKMh } from '@/domain/utils/speedUtils';
 import { heatColor } from '@/domain/helper/heatColor';
+import { windDirection } from '@/domain/helper/windDirection';
 
 interface MainParams {
     temp: number;
@@ -109,7 +110,7 @@ class Weather extends BaseModel implements IWeatherParams {
      */
     getWindFormatted(): string {
         const speed = msToKMh(this.wind.speed).toFixed(2);
-        return `${speed.toString()}Km/h`;
+        return `${this.windDirection} ${speed.toString()}Km/h`;
     }
 
     /**
@@ -131,6 +132,13 @@ class Weather extends BaseModel implements IWeatherParams {
      */
     get heatColor(): string {
         return heatColor(kelvinToCelsius(this.temperature));
+    }
+
+    /**
+     * Wind Direction
+     */
+    get windDirection(): string {
+        return windDirection(this.wind.deg);
     }
 
     static fromData(data: IWeatherParams): Weather {
