@@ -16,7 +16,8 @@ module.exports = merge(common, {
     },
     devtool: 'source-map',
     devServer: {
-        port: 8080,
+        host: process.env.HOST || 'localhost',
+        port: process.env.PORT,
         open: true,
         historyApiFallback: true,
     },
