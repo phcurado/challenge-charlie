@@ -74,12 +74,14 @@ const mainPage = () => {
     };
 
     const renderForecasts = () => {
+        const daysLabel = ['AMANHÃ', 'DEPOIS DE AMANHÃ'];
+
         return forecastInfo.list.map((forecast, i) => {
             return (
                 <Row key={i}>
                     <Col>
                         <WeatherCard
-                            dayLabel={i === 0 ? 'AMANHÃ' : 'DEPOIS DE AMANHÃ'}
+                            dayLabel={daysLabel[i]}
                             backgroundColor={forecast.heatColor}
                             color="white"
                             temperature={forecast.getTemperatureFormatted(temperatureType)}

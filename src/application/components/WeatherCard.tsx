@@ -43,6 +43,10 @@ const P = styled.p`
     margin: ${(props) => props.margin};
     text-transform: ${(props) => props.textTransform};
 
+    @media (max-width: 800px) {
+        text-align: center;
+    }
+
     ${({ cursor }: ParagraphProps) =>
         cursor &&
         css`
@@ -62,7 +66,7 @@ const weatherCard = ({
     return (
         <Div backgroundColor={backgroundColor}>
             <Row>
-                <Col>
+                <Col hiddenSm="800px">
                     {icon ? (
                         <WeatherIcon fill={color} name={icon} width="200px" height="200px" />
                     ) : null}

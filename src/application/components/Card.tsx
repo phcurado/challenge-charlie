@@ -10,6 +10,9 @@ const Card = styled.div`
     flex-direction: row;
     justify-content: center;
     width: ${({ width }: Props) => width};
+    @media (max-width: ${({ width }: Props) => width}) {
+        width: 100%;
+    }
 `;
 
 const CardInner = styled.div`

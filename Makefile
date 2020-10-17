@@ -6,3 +6,6 @@ up-build: # Build app
 
 down: # Stop app
 	docker-compose down
+
+build-prod:
+    docker build . -t desafio-charlie
