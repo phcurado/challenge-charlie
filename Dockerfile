@@ -2,7 +2,6 @@ FROM node:14.13.1-alpine3.10 as build
 
 WORKDIR /app
 
-# Install dependencies
 COPY package.json .
 COPY package-lock.json .
 RUN npm install
