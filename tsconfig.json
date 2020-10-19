@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "./build/",
-        "types": ["react", "node"],
+        "types": ["react", "node", "jest"],
         "importHelpers": true,
         "moduleResolution": "node",
         "sourceMap": true,

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
     url: string;
-    children: ReactNode;
+    children?: ReactNode;
 }
 const BackgroundImage = styled.div`
     width: 100%;
