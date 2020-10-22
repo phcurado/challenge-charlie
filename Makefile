@@ -17,3 +17,6 @@ logs: # Tail the service container's logs
 
 build-prod: # Build the production image
 	docker build . -t desafio
+
+up-prod: # Run the production image
+	docker-compose -f docker-compose.prod.yml up -d --build

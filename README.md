@@ -8,20 +8,24 @@ Bem vindo ao Desafio Charlie, nos tópicos abaixo serão explicados como instala
     - [NPM](#npm)
   - [Arquitetura](#arquitetura)
   - [Produção](#produção)
+    - [Docker](#docker-1)
+    - [NPM](#npm-1)
+    - [Considerações](#considerações)
   - [Considerações finais do desenvolvedor](#considerações-finais-do-desenvolvedor)
 
 ## Instalar e rodar o projeto
 
-Este projeto pode ser instalado e rodado tanto por Docker container quanto por npm.
+Este projeto pode ser instalado e rodado tanto pelo Docker quanto pelo npm.
 É recomendado usar `node/npm` em desenvolvimento para ter maior velocidade de feedback, tempo de build e responsividade do servidor webpack.
 
 ### Docker
 
-Para instalar as dependencias e rodar o projeto rode o comando em seu terminal `make up`.
-Caso não tenha [Make](https://pt.wikipedia.org/wiki/Make) instalado em seu computador você pode olhar os comandos dentro do arquivo `Makefile`. Como exemplo o comando `make up` é o mesmo de chamar no terminal `docker-compose up -d`.
+Para instalar as dependencias e rodar o projeto rode este comando em seu terminal: `make up`.
 
-Comandos:
-- `make up`
+Caso não tenha [Make](https://pt.wikipedia.org/wiki/Make) instalado em seu computador você pode olhar os comandos dentro do arquivo `Makefile` para ajudar a entender como funciona os scripts. Como exemplo o comando `make up` é o mesmo de chamar no terminal `docker-compose up -d`.
+
+Para rodar:
+- `make up` ou `docker-compose up -d`
 - Acesse em seu browser: [http://localhost:8080](http://localhost:8080/)
 
 
@@ -32,12 +36,16 @@ Comandos:
 - Para rodar o projeto no servidor de desenvolvimento: `npm run start`
 - Acesse em seu browser: [http://localhost:8080](http://localhost:8080/)
 
+Para rodar os testes: `npm run test`
+
 
 ## Arquitetura
 
-A estrutura principal foi dividida em três partes, `application`, `domain`,  e `infrastructure`. O objetivo desta estrutura é separar completamente toda a lógica de domínio e integrações da aplicação feita em `React`. No caso de precisar trocar o framework principal ou até usar vanilla javascript pode-se fazer-lo mudando estruturalmente a configuração do webpack, package.json e alterar a pasta `application` para não ter a arquitetura do React. Assim a arquitetura fica mais divida em termos de responsabilidades.
+A estrutura principal foi dividida em três partes: `Application`, `Domain`,  e `Infrastructure`. O objetivo desta estrutura é separar completamente toda a lógica de domínio e integrações da aplicação feita em `React`.
 
-Esta arquitetura foi inspirada na Clean Architecture, pegando alguns de seus conceitos para este pequeno projeto e posteriormente melhorá-lo e adicionar mais features.
+A princípio, com esta separação, é possível trocar o framework principal (React) ou até mesmo usar typescript puro mudando estruturalmente a configuração do webpack, package.json e os arquivos na pasta `application`. Apesar de não ser comum esta troca, manter a lógica de domínio separada de frameworks facilita futuras implementações devido a melhor divisão da aplicação em termos de responsabilidades.
+
+Esta arquitetura foi inspirada na Clean Architecture, pegando alguns de seus conceitos para este pequeno projeto e posteriormente melhorá-lo com adição de features.
 
 <img src="docs/clean_architecture.jpg" alt="Clean Architecture" />
 
@@ -47,11 +55,25 @@ Esta arquitetura foi inspirada na Clean Architecture, pegando alguns de seus con
 
 
 ## Produção
+
+### Docker
+
+- rode `make up-prod`
+- Acesse em seu browser: [http://localhost:8080](http://localhost:8080/)
+
+ps: este é apenas um meio de testar a aplicação com configuração de produção em um container docker. O correto seria gerar a imagem e tag para subir em um registro privado.
+
+### NPM
+
 Para buildar para produção utilize o comando `npm run build`.
 
-Note que a pasta `build` foi criada e seus arquivos devem ser colocados em um servidor com roteamento configurado para servir os arquivos estáticos. Um exemplo simples é destinar o servidor para seguir normalmente seu roteamento interno (no formato `json` por exemplo) os requests para `https://{host_name}/api/*` e arquivos estáticos como `html`, `css`, `js` e imagens para `https://{host_name}/*`.
+Note que a pasta `build` foi criada, seus arquivos devem ser colocados em um servidor com roteamento configurado para servir os arquivos estáticos. Um exemplo simples é destinar o servidor para seguir normalmente seu roteamento interno (no formato `json` por exemplo) os requests para `https://{host_name}/api/*` e arquivos estáticos como `html`, `css`, `js` e imagens para `https://{host_name}/*`.
 
-Pode-se utilizar o `Docker` configurado nesta aplicação para o build de produção. Primeiramente deve-se rodar o comando `make build-prod` para gerar a imagem de produção. Nela foi usado o servidor [nginx](https://nginx.com/) para o roteamento dos arquivos estáticos, mas poderia ser utilizado qualquer outro servidor para este fim. Após isso esta imagem pode ser usada em um cluster [Kuberentes](https://kubernetes.io/) por exemplo ou até rodar pelo próprio docker. Um comando simples para testá-la depois do build é:
+### Considerações
+
+Como apresentado acima, pode-se gerar o build de produção tanto pelo Docker quanto pelo NPM. Caso for necessário apenas buildar a imagem `Docker` para depois subir em um registro, deve-se rodar o comando `make build-prod`. Assim com a imagem gerada pode-se colocar em um registro como o ECR da Amazon.
+
+Na imagem de produção foi usado o servidor [nginx](https://nginx.com/) para o roteamento dos arquivos estáticos, mas poderia ser utilizado qualquer outro servidor para este fim. Após isso esta imagem pode ser usada em um cluster [Kuberentes](https://kubernetes.io/) por exemplo ou até rodar pelo próprio docker. Um comando simples para testá-la depois do build é:
 `docker run -p 8080:80 --env-file .env desafio:latest`. Isso irá garantir o teste da imagem de produção de maneira fácil e rápida.
 
 Para testar a imagem em produção sem ter problemas de CORS foi criado um pequeno `docker-compose` para facilitar o teste dessa imagem. Para rodar os arquivos estáticos em produção em conjunto com o proxy reverso do Bing, deve-se rodar o comando `docker-compose -f docker-compose.prod.yml up`.
