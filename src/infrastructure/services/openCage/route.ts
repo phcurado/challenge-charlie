@@ -1,3 +1,3 @@
 export default {
-    BASE: 'https://api.opencagedata.com/geocode/v1/json',
+    BASE: process.env.OPEN_CAGE_API,
 };

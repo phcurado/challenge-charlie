@@ -24,7 +24,6 @@ import useDebounce from '@/application/hooks/useDebounce';
 const mainPage = () => {
     const [geolocation, setGeolocation] = useState(new Geolocation());
     const [locationName, setLocationName] = useState('');
-
     const [weatherInfo, setWeatherInfo] = useState(new Weather());
     const [temperatureType, setTemperatureType] = useState(TemperatureType.CELSIUS);
     const [forecastInfo, setForecastInfo] = useState(new Forecast());
@@ -43,10 +42,10 @@ const mainPage = () => {
         fetchWeather();
     }, [debouncedLocationName]);
 
-    const fetchLatLong = async () => {
-        const dummyGeo = new Geolocation();
-        geolocationService.setLocation(dummyGeo);
-        setGeolocation(dummyGeo);
+    const fetchLatLong = () => {
+        geolocationService.setLocation((geo: Geolocation) => {
+            setGeolocation(geo);
+        });
     };
 
     const fetchLocationName = async () => {

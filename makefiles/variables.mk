@@ -1,1 +1,2 @@
 FRONT ?= front
+BING ?= bing

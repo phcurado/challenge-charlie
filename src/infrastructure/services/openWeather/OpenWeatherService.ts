@@ -2,11 +2,12 @@ import { AxiosInstance, AxiosResponse } from 'axios';
 import route from './route';
 import OpenWeather, { IWeatherParams } from '@/domain/models/weather/Weather';
 import Forecast, { IForecastParams } from '@/domain/models/weather/Forecast';
+import IOpenWeatherService from '@/domain/interfaces/IOpenWeatherService';
 
 /**
  * Service for the OpenWeather API
  */
-class OpenWeatherService {
+class OpenWeatherService implements IOpenWeatherService {
     static API_KEY = process.env.OPEN_WEATHER_API_KEY;
     constructor(private http: AxiosInstance) {}
 

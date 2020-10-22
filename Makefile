@@ -3,6 +3,9 @@ include makefiles/variables.mk
 up: # Start app
 	docker-compose up -d
 
+up-bing: # Start app
+	docker-compose up -d $(BING)
+
 up-build: # Build app
 	docker-compose up -d --build
 

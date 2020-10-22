@@ -1,13 +1,19 @@
 import Forecast from '@/domain/models/weather/Forecast';
-import { openWeatherService } from '@/infrastructure/services';
+import IOpenWeatherService from '../interfaces/IOpenWeatherService';
 
 /**
  * Service for the Domain Weather
  */
 class WeatherService {
+    private openWeatherService: IOpenWeatherService;
+
+    constructor(openWeatherService: IOpenWeatherService) {
+        this.openWeatherService = openWeatherService;
+    }
+
     async getForecast(locationName: string, daysAfter: number): Promise<Forecast | null> {
         try {
-            const forecast = await openWeatherService.getForecast(locationName, 8 * daysAfter);
+            const forecast = await this.openWeatherService.getForecast(locationName, 8 * daysAfter);
             forecast.list =
                 forecast?.list != null
                     ? forecast.list

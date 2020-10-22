@@ -20,15 +20,26 @@ Este projeto pode ser instalado e rodado tanto por Docker container quanto por n
 Para instalar as dependencias e rodar o projeto rode o comando em seu terminal `make up`.
 Caso não tenha [Make](https://pt.wikipedia.org/wiki/Make) instalado em seu computador você pode olhar os comandos dentro do arquivo `Makefile`. Como exemplo o comando `make up` é o mesmo de chamar no terminal `docker-compose up -d`.
 
+Comandos:
+- `make up`
+- Acesse em seu browser: [http://localhost:8080](http://localhost:8080/)
+
 
 ### NPM
 
 - Para instalar as dependencias: `npm install`
+- Para rodar o proxy para o site bing rode: `make up-bing`
 - Para rodar o projeto no servidor de desenvolvimento: `npm run start`
 - Acesse em seu browser: [http://localhost:8080](http://localhost:8080/)
+
+
 ## Arquitetura
 
 A estrutura principal foi dividida em três partes, `application`, `domain`,  e `infrastructure`. O objetivo desta estrutura é separar completamente toda a lógica de domínio e integrações da aplicação feita em `React`. No caso de precisar trocar o framework principal ou até usar vanilla javascript pode-se fazer-lo mudando estruturalmente a configuração do webpack, package.json e alterar a pasta `application` para não ter a arquitetura do React. Assim a arquitetura fica mais divida em termos de responsabilidades.
+
+Esta arquitetura foi inspirada na Clean Architecture, pegando alguns de seus conceitos para este pequeno projeto e posteriormente melhorá-lo e adicionar mais features.
+
+<img src="docs/clean_architecture.jpg" alt="Clean Architecture" />
 
 - **Application**: Onde ficam as páginas e componentes feitos na biblioteca React. Este diretório consome as regras de domínio e infraestrutura para apresentar as informações na tela do usuário.
 - **Domain**: O domínio da aplicação é a implementação das regras de negócio. Nela basicamente tem os objetos de domínio usados para instanciar, ter valores padões e utilitários para serem usadas nas telas ou na camada de `infraestrutura`.
@@ -40,8 +51,10 @@ Para buildar para produção utilize o comando `npm run build`.
 
 Note que a pasta `build` foi criada e seus arquivos devem ser colocados em um servidor com roteamento configurado para servir os arquivos estáticos. Um exemplo simples é destinar o servidor para seguir normalmente seu roteamento interno (no formato `json` por exemplo) os requests para `https://{host_name}/api/*` e arquivos estáticos como `html`, `css`, `js` e imagens para `https://{host_name}/*`.
 
-Pode-se utilizar o `Docker` configurado nesta aplicação para o build de produção. Primeiramente deve-se rodar o comando `make build` para gerar a imagem de produção. Nela foi usado o servidor [nginx](https://nginx.com/) para o roteamento dos arquivos estáticos, mas poderia ser utilizado qualquer outro servidor para este fim. Após isso esta imagem pode ser usada em um cluster [Kuberentes](https://kubernetes.io/) por exemplo ou até rodada pelo próprio docker. Um comando simples para testá-la depois do build é:
+Pode-se utilizar o `Docker` configurado nesta aplicação para o build de produção. Primeiramente deve-se rodar o comando `make build-prod` para gerar a imagem de produção. Nela foi usado o servidor [nginx](https://nginx.com/) para o roteamento dos arquivos estáticos, mas poderia ser utilizado qualquer outro servidor para este fim. Após isso esta imagem pode ser usada em um cluster [Kuberentes](https://kubernetes.io/) por exemplo ou até rodar pelo próprio docker. Um comando simples para testá-la depois do build é:
 `docker run -p 8080:80 --env-file .env desafio:latest`. Isso irá garantir o teste da imagem de produção de maneira fácil e rápida.
+
+Para testar a imagem em produção sem ter problemas de CORS foi criado um pequeno `docker-compose` para facilitar o teste dessa imagem. Para rodar os arquivos estáticos em produção em conjunto com o proxy reverso do Bing, deve-se rodar o comando `docker-compose -f docker-compose.prod.yml up`.
 
 ## Considerações finais do desenvolvedor
 
